@@ -2,6 +2,6 @@
     <section>
         <Header />
         <slot />
-        <Footer />
+        <!--    <Footer />  -->
     </section>
 </template>
