@@ -1,10 +1,12 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps({
     product: {
         type: Object,
         default: {},
     }
-})
+});
+
+const { baseStorageUrl } = useAppConfig();
 </script>
 <template>
     <section class="py-10">
@@ -15,7 +17,7 @@ const props = defineProps({
         </NuxtLink>
         <div class="flex flex-col items-center">
           <div class="bg-gray-300 rounded-3xl flex justify-center items-center p-5 h-[500px] w-full md:w-1/2">
-            <img :src="props.product.image" class="w-full h-full object-contain" />
+            <img :src="baseStorageUrl + props.product.image" class="w-full h-full object-contain" />
           </div>
           <div class="w-full md:w-1/2 pl-5">
             <p class="text-xl font-light mb-3">{{ props.product.category }}</p>

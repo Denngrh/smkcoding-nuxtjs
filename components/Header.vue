@@ -1,44 +1,41 @@
+<script lang="ts" setup>
+import { useAuthStore } from "~/stores/auth";
+
+const authStore = useAuthStore();
+const isAuthenticated = ref();
+const router = useRouter();
+isAuthenticated.value = useCookie("access_token").value;
+
+const logout = async () => {
+  await authStore.logout();
+  const accessToken = useCookie("access_token");
+  const refreshToken = useCookie("refresh_token");
+  accessToken.value = null;
+  refreshToken.value = null;
+  setTimeout(() => {
+    isAuthenticated.value = useCookie("access_token").value;
+  }, 100);
+  router.push({
+    path: "/",
+  });
+};
+</script>
+
 <template>
-  <header class="bg-blue-500 p-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <nuxt-link to="/" class="text-white text-xl font-bold">SMK Coding</nuxt-link>
-      <div class="hidden md:flex space-x-4">
-        <nuxt-link to="/" class="text-white text-xl font-bold" :class="{'text-yellow-500': isActive('/')}" exact-active-class="text-yellow-500">Home</nuxt-link>
-        <nuxt-link to="/product" class="text-white text-xl font-bold"
-          exact-active-class="text-yellow-500">Product</nuxt-link>
-        <nuxt-link to="/cart" class="text-white text-xl font-bold" exact-active-class="text-yellow-500">Cart</nuxt-link>
-      </div>
-      <div class="md:hidden flex space-x-4">
-        <div class="relative group">
-          <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-white text-xl">
-            ☰
-          </button>
-          <div v-if="mobileMenuOpen"
-            class="absolute top-0 right-0 mt-10 w-48 bg-blue-500 border border-white p-4 space-y-4 text-white">
-            <nuxt-link to="/" class="text-white text-xl font-bold" :class="{'text-yellow-500': isActive('/')}" exact-active-class="text-yellow-500">Home</nuxt-link>
-            <nuxt-link to="/product" class="block" exact-active-class="text-yellow-500">Product</nuxt-link>
-            <nuxt-link to="/cart" class="block" exact-active-class="text-yellow-500">Cart</nuxt-link>
-          </div>
+  <header class="w-full border-b border-slate-200 py-6 bg-blue-500">
+    <div class="container mx-auto">
+      <div class="flex justify-between items-center">
+        <div>
+          <NuxtLink to="/" class="text-xl font-bold text-white">SMKCoding</NuxtLink>
         </div>
+        <nav class="flex items-center gap-6">
+          <NuxtLink to="/" class="text-base text-white">Home</NuxtLink>
+          <NuxtLink to="/product" class="text-base text-white">Products</NuxtLink>
+          <NuxtLink to="/cart" class="text-base text-white">Cart</NuxtLink>
+          <NuxtLink v-if="!isAuthenticated" to="/login" class="text-base bg-blue-600 px-6 py-2 text-white rounded-lg hover:bg-blue-600/80">Login</NuxtLink>
+          <div v-else class="text-base cursor-pointer bg-red-600 px-6 py-2 text-white rounded-lg hover:bg-red-600/80" @click="logout">Logout</div>
+        </nav>
       </div>
     </div>
   </header>
 </template>
-
-  
-<script>
-export default {
-  data() {
-    return {
-      mobileMenuOpen: false
-    };
-  },
-  methods: {
-    isActive(route) {
-      return this.$route.path === route;
-    }
-  }
-};
-
-</script>
-  

@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "@vite-pwa/nuxt"],
+  modules: ["@nuxtjs/tailwindcss", "@vite-pwa/nuxt", "@pinia/nuxt"],
 
   tailwindcss: {
     cssPath: "assets/css/tailwind.css",
